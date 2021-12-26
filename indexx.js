@@ -6,18 +6,18 @@
 //npm install bcrypt    ==>buat password hashing
 
 require('dotenv').config()
-const express = require('express');
+const express = require('express')
 const app = express()
 const userRoute = require('./src/route/user')
 const walletRoute = require('./src/route/wallet')
 const transactionRoute = require('./src/route/transaction')
 const helper =  require('./src/helper/common')
 const morgan = require('morgan')
-const mysql = require('mysql2');
+const mysql = require('mysql2')
 const connection = require('./src/config/db')
 
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000
 app.listen(PORT, ()=>{
     console.log(`Server running in port ${PORT}`)
 })

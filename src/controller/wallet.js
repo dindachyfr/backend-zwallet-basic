@@ -19,13 +19,6 @@ const postWallet = async (req, res, next)=>{
         errorRes.status = 500
         console.log(error)
         next(errorRes)
-
-          // console.log(error);
-          // res.status(500)
-          // res.json({
-          //   statusCode: 500,
-          //   message: 'Internal Server Error'
-          // })
       }
 }
 
@@ -38,13 +31,6 @@ const getWallet = async (req,res,next)=>{
         errorRes.status = 500
         console.log(error)
         next(errorRes)
-
-          // console.log(error);
-          // res.status(500)
-          // res.json({
-          //   statusCode: 500,
-          //   message: 'Internal Server Error'
-          // })
       }
 }
 
@@ -62,13 +48,6 @@ const updateWallet = async (req,res,next)=>{  //currently update by wallet_id
                 errorRes.status = 500
                 console.log(error)
                 next(errorRes)
-        
-                  // console.log(error);
-                  // res.status(500)
-                  // res.json({
-                  //   statusCode: 500,
-                  //   message: 'Internal Server Error'
-                  // })
                       }
 }
 
@@ -84,13 +63,6 @@ const getDetailedWallet = async (req, res, next) =>{
             errorRes.status = 500
             console.log(error)
             next(errorRes)
-    
-              // console.log(error);
-              // res.status(500)
-              // res.json({
-              //   statusCode: 500,
-              //   message: 'Internal Server Error'
-              // })
               }
 }
 

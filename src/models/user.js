@@ -1,19 +1,20 @@
 const connection = require('../config/db')
-const getUsers = ()=>{
+
+const countUsers =() =>{
   return new Promise((resolve, reject)=>{
-    connection.query("SELECT * FROM users", (error, result) => {
-      if (!error) {
+    connection.query("SELECT COUNT (*) AS total FROM users", (error,result)=>{
+      if(!error){
         resolve(result)
-      } else {
+      }else{
         reject(error)
       }
     })
   })
 }
 
-const getUsersFiltered = (filter)=>{
+const getUsersFiltered = ({filter, limit, offset})=>{
   return new Promise((resolve, reject)=>{
-    connection.query(`SELECT * FROM users WHERE name LIKE ` + connection.escape(`%${filter}%`) ,(error, result) => {
+    connection.query(`SELECT * FROM users WHERE name LIKE '%${filter}%' LIMIT ${limit} OFFSET ${offset}` ,(error, result) => {
       if (!error) {
         resolve(result)
       } else {
@@ -58,10 +59,36 @@ const updateUser = (dataUser, id)=>{
    
   }
 
+  const findByEmail = (email) =>{
+    return new Promise ((resolve, reject)=>{
+      connection.query("SELECT * FROM users WHERE email = ?", email, (error, result)=>{
+        if(!error){
+          resolve(result)
+        }else{
+          reject(error)
+        }
+      })
+    })
+  }
+
+  const createAccount = (data) =>{
+    return new Promise ((resolve, reject)=>{
+      connection.query("INSERT INTO users SET ?", data, (error, result)=>{
+        if(!error){
+          resolve(result)
+        }else{
+          reject(error)
+        }
+      })
+    })
+  }
+
 module.exports = {
-    getUsers: getUsers,
     postUser: postUser,
     delUser: delUser,
     updateUser: updateUser,
-    getUsersFiltered: getUsersFiltered
+    getUsersFiltered: getUsersFiltered,
+    countUsers: countUsers,
+    findByEmail: findByEmail,
+    createAccount: createAccount,
 }

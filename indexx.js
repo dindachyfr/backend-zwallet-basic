@@ -3,6 +3,8 @@
 //npm install nodemon -D
 //npm install morgan        ==>buat mempermudah debugging
 //npm install dotenv
+//npm install bcrypt    ==>buat password hashing
+
 require('dotenv').config()
 const express = require('express');
 const app = express()

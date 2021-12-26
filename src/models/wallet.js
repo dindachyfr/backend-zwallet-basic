@@ -14,7 +14,7 @@ const postWallet = (dataWallet)=>{
 
 const getWallet = ()=>{
     return new Promise ((resolve, reject)=>{
-        connection.query("SELECT wallet.id AS record_no, wallet.user_id, users.name, wallet.balance  from wallet JOIN users ON wallet.user_id = users.id;", (error, result) => {
+        connection.query("SELECT wallet.id, wallet.user_id, users.name, wallet.balance  from wallet JOIN users ON wallet.user_id = users.id;", (error, result) => {
             if (!error) {
               resolve(result)
             } else {

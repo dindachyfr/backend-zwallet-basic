@@ -1,3 +1,5 @@
+//npm i joi   => validation package
+
 const handleNotFound = (req, res, next) => {
   res.status(404)
   res.json({
@@ -5,13 +7,13 @@ const handleNotFound = (req, res, next) => {
   })
 }
 
-const reponse = (res, result, statusCode, error) =>{
+const reponse = (res, result, statusCode, message, pagination) =>{
   res.json({
     status: "Success",
     code: statusCode,
     data: result,
-    message: null
-
+    message: message,
+    pagination: pagination
   })
 }
 

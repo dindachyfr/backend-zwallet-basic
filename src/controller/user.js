@@ -47,7 +47,7 @@ const postUser = async (req, res, next)=>{
         commonHelper.reponse(res, result, 200)       
         }
         catch (error) {
-          const errorRes = new Error('Internal Server Error')
+          const errorRes = new Error("Internal Server Error")
           errorRes.status = 500
           console.log(error)
           next(errorRes)

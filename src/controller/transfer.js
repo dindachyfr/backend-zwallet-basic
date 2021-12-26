@@ -47,7 +47,7 @@ const confirmTransfer = async (req, res, next) => { // .put('/transfer/confirm/:
 const cancelTransfer = async (req, res, next) => { // .delete('/transfer/cancel/:id)
   try {
     const record_no = req.params.id;
-    const result = await modelWallet.delTransaction(record_no);// buat delete from transaction where id = record_no
+    const result = await modelTransaction.delTransaction(record_no);// buat delete from transaction where id = record_no
     commonHelper.reponse(res, result, 200, "Transaction canceled");
   } catch (error) {
     const errorRes = new Error("Internal Server Error");

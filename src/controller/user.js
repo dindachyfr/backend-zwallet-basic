@@ -1,6 +1,4 @@
-const { listen } = require("express/lib/application");
-const mysql = require("mysql2");
-const connection = require("../config/db");
+/* eslint-disable camelcase */
 const modelUsers = require("../models/user");
 const commonHelper = require("../helper/common");
 const bcrypt = require("bcrypt");

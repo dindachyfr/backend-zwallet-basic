@@ -39,8 +39,8 @@ const midWallet = async (req, res, next) => {
 };
 
 midUser = (req, res, next) => {
-  const { name, phone_number, username, email, password, pin } = req.body;
-  if (!name || !phone_number || !username || !email || !password || !pin) {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
     const errorRes = new Error("Please fill in all forms!");
     errorRes.status = 500;
     next(errorRes);

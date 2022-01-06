@@ -68,6 +68,18 @@ const findByEmail = (email) => {
   });
 };
 
+const userDisplay = (email) => {
+  return new Promise((resolve, reject) => {
+    connection.query("SELECT users.id, users.name, users.phone_number, users.email, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE email = ?", email, (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
 const createAccount = (data) => {
   return new Promise((resolve, reject) => {
     connection.query("INSERT INTO users SET ?", data, (error, result) => {
@@ -87,5 +99,6 @@ module.exports = {
   getUsersFiltered: getUsersFiltered,
   countUsers: countUsers,
   findByEmail: findByEmail,
-  createAccount: createAccount
+  createAccount: createAccount,
+  userDisplay: userDisplay
 };

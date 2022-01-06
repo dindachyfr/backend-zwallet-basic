@@ -119,6 +119,7 @@ const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     const [user] = await modelUsers.findByEmail(email);
+    const [userDisplay] = await modelUsers.userDisplay(email);
     console.log(user);
 
     const passwordMatches = await bcrypt.compare(password, user.password);
@@ -126,7 +127,7 @@ const loginUser = async (req, res, next) => {
     console.log(user.password);
     console.log(passwordMatches);
     if (passwordMatches) {
-      commonHelper.reponse(res, null, 200, "Login Success");
+      commonHelper.reponse(res, userDisplay, 200, "Login Success");
     } else {
       const errorRes = new Error("You entered the wrong email / password!");
       errorRes.status = 403;

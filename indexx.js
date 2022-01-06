@@ -13,12 +13,14 @@ const walletRoute = require("./src/route/wallet");
 const transactionRoute = require("./src/route/transaction");
 const helper = require("./src/helper/common");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running in port ${PORT}`);
 });
 
+app.use(cors());
 // middlewear to access json data
 app.use(express.json());
 

@@ -14,7 +14,7 @@ const countUsers = () => {
 
 const getUsersFiltered = ({ filter, limit, offset }) => {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT id, name, phone_number, username, email, created_at FROM users WHERE name LIKE '%${filter}%' LIMIT ${limit} OFFSET ${offset}`, (error, result) => {
+    connection.query(`SELECT users.id, users.name, users.phone_number, users.email, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE name LIKE '%${filter}%' LIMIT ${limit} OFFSET ${offset}`, (error, result) => {
       if (!error) {
         resolve(result);
       } else {

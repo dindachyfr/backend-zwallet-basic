@@ -160,5 +160,6 @@ module.exports = {
   updateUser: updateUser,
   getUsersFiltered: getUsersFiltered,
   registerUser: registerUser,
-  loginUser: loginUser
+  loginUser: loginUser,
+  getUserByID: getUserByID
 };

@@ -27,7 +27,7 @@ const getUsersFiltered = ({ filter, limit, offset }) => {
 
 const getUserByID = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT users.id, users.name, users.phone_number, users.email, wallet.id AS wallet_id FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE id = ?`, id, (error, result) => {
+    connection.query("SELECT users.id, users.name, users.phone_number, users.email, wallet.id AS wallet_id FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE id = ?", id, (error, result) => {
       if (!error) {
         resolve(result);
       } else {

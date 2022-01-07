@@ -141,11 +141,25 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const getUserByID = (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const result = await modelUsers.getUserByID(id);
+    commonHelper.reponse(res, result, 200, null);
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
 module.exports = {
   postUser: postUser,
   delUser: delUser,
   updateUser: updateUser,
   getUsersFiltered: getUsersFiltered,
   registerUser: registerUser,
-  loginUser: loginUser
+  loginUser: loginUser,
+  getUserByID: getUserByID
 };

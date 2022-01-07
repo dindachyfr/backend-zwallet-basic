@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const connection = require("../config/db");
 
 const countUsers = () => {
@@ -15,6 +16,18 @@ const countUsers = () => {
 const getUsersFiltered = ({ filter, limit, offset }) => {
   return new Promise((resolve, reject) => {
     connection.query(`SELECT users.id, users.name, users.phone_number, users.email, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE name LIKE '%${filter}%' LIMIT ${limit} OFFSET ${offset}`, (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
+const getUserByID = (id) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`SELECT users.id, users.name, users.phone_number, users.email, wallet.id AS wallet_id FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE id = ?`, id, (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -100,5 +113,6 @@ module.exports = {
   countUsers: countUsers,
   findByEmail: findByEmail,
   createAccount: createAccount,
-  userDisplay: userDisplay
+  userDisplay: userDisplay,
+  getUserByID: getUserByID
 };

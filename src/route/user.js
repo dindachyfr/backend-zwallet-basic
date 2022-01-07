@@ -10,6 +10,7 @@ route
   .delete("/:id", userController.delUser)
   .put("/:id", userController.updateUser)
   .post("/register", middleware.midUser, userController.registerUser)
-  .post("/login", userController.loginUser);
+  .post("/login", userController.loginUser)
+  .get("/:id", userController.getUserByID);
 
 module.exports = route;

@@ -141,7 +141,7 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-const getUserByID = (req, res, next) => {
+const getUserByID = async (req, res, next) => {
   try {
     const id = req.params.id;
     const result = await modelUsers.getUserByID(id);

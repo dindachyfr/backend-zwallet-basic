@@ -6,6 +6,7 @@ const route = express.Router();
 
 route
   .get("/", transactionController.getTransaction)
+  .get("/:id", transactionController.getTransactionRecord)
   .get("/history/:sender_wallet_id", transactionController.getTransactionHistory)
   .put("/transfer/confirm/:sender_wallet_id/:id", transferController.confirmTransfer)
   .delete("/transfer/cancel/:id", transferController.cancelTransfer)

@@ -85,9 +85,23 @@ const getTransaction = async (req, res, next) => {
   }
 };
 
+const getTransactionRecord = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const result = await modelTransaction.getTransactionRecord(id);
+    commonHelper.reponse(res, result, 200, null);
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
 module.exports = {
   postTransaction: postTransaction,
   delTransaction: delTransaction,
   getTransaction: getTransaction,
-  getTransactionHistory: getTransactionHistory
+  getTransactionHistory: getTransactionHistory,
+  getTransactionRecord: getTransactionRecord
 };

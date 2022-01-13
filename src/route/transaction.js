@@ -6,10 +6,11 @@ const route = express.Router();
 
 route
   .get("/", transactionController.getTransaction)
-  .get("/:id", transactionController.getTransactionRecord)
+  .get("/:transaction_id", transactionController.getTransactionRecord)
   .get("/history/:sender_wallet_id", transactionController.getTransactionHistory)
-  .put("/transfer/confirm/:sender_wallet_id/:id", transferController.confirmTransfer)
+  .put("/transfer/confirm/:sender_wallet_id/:transaction_id", transferController.confirmTransfer)
   .delete("/transfer/cancel/:id", transferController.cancelTransfer)
-  .post("/transfer", middleware.midTransfer, transferController.transfer);
+  .post("/transfer", middleware.midTransfer, transferController.transfer)
+  .put("/transfer/confirm/:id/:sender_wallet_id/:transaction_id", transferController.confirmTransfer);
 
 module.exports = route;

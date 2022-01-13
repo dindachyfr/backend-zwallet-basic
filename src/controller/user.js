@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 const modelUsers = require("../models/user");
+const modelWallet = require("../models/wallet");
 const commonHelper = require("../helper/common");
 const bcrypt = require("bcrypt");
 
@@ -40,6 +41,7 @@ const postUser = async (req, res, next) => {
       pin: pin
     };
     const result = await modelUsers.postUser(dataUser);
+    // eslint-disable-next-line no-unused-vars
     commonHelper.reponse(res, result, 200);
   } catch (error) {
     const errorRes = new Error("Internal Server Error");
@@ -63,10 +65,39 @@ const delUser = async (req, res, next) => {
   }
 };
 
+const updatePinUser = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    // const { name, phone_number, username, email, password, pin } = req.body;
+    const { pin } = req.body;
+    // const passwordHashed = await bcrypt.hash(password, 10);
+    // const dataUser = {
+    //   name: name,
+    //   phone_number: phone_number,
+    //   username: username,
+    //   email: email,
+    //   password: passwordHashed,
+    //   pin: pin
+    // };
+    const dataUser = {
+      pin: pin
+    };
+
+    const result = await modelUsers.updateUser(dataUser, id);
+    commonHelper.reponse(res, result, 200, "Profile has been successfully updated");
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
 const updateUser = async (req, res, next) => {
   try {
     const id = req.params.id;
     const { name, phone_number, username, email, password, pin } = req.body;
+    // const { pin } = req.body;
     const passwordHashed = await bcrypt.hash(password, 10);
     const dataUser = {
       name: name,
@@ -76,6 +107,10 @@ const updateUser = async (req, res, next) => {
       password: passwordHashed,
       pin: pin
     };
+    // const dataUser = {
+    //   pin: pin
+    // };
+
     const result = await modelUsers.updateUser(dataUser, id);
     commonHelper.reponse(res, result, 200, "Profile has been successfully updated");
   } catch (error) {
@@ -104,6 +139,9 @@ const registerUser = async (req, res, next) => {
       };
 
       const accountCreated = await modelUsers.createAccount(data);
+      const dataWallet = { user_id: accountCreated.insertId, balance: 0 };
+      // eslint-disable-next-line no-unused-vars
+      const resultWallet = await modelWallet.postWallet(dataWallet);
       commonHelper.reponse(res, accountCreated, 201, "Data Succesfully Created");
     }
   } catch (error) {
@@ -157,9 +195,10 @@ const getUserByID = async (req, res, next) => {
 module.exports = {
   postUser: postUser,
   delUser: delUser,
-  updateUser: updateUser,
+  updatePinUser: updatePinUser,
   getUsersFiltered: getUsersFiltered,
   registerUser: registerUser,
   loginUser: loginUser,
-  getUserByID: getUserByID
+  getUserByID: getUserByID,
+  updateUser: updateUser
 };

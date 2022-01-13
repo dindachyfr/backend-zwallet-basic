@@ -87,7 +87,7 @@ const getTransaction = async (req, res, next) => {
 
 const getTransactionRecord = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const id = req.params.transaction_id;
     const result = await modelTransaction.getTransactionRecord(id);
     commonHelper.reponse(res, result, 200, null);
   } catch (error) {

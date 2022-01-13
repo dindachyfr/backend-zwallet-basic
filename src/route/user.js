@@ -8,6 +8,7 @@ route
   .post("/", userController.postUser)
   .get("/", userController.getUsersFiltered)
   .delete("/:id", userController.delUser)
+  .put("/pin/:id", userController.updatePinUser)
   .put("/:id", userController.updateUser)
   .post("/register", middleware.midUser, userController.registerUser)
   .post("/login", userController.loginUser)

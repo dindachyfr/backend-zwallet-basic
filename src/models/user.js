@@ -27,7 +27,7 @@ const getUsersFiltered = ({ filter, limit, offset }) => {
 
 const getUserByID = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query("SELECT users.id, users.name, users.phone_number, users.email, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE users.id = ?", id, (error, result) => {
+    connection.query("SELECT users.id, users.name, users.phone_number, users.email, users.pin, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE users.id = ?", id, (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -83,7 +83,7 @@ const findByEmail = (email) => {
 
 const userDisplay = (email) => {
   return new Promise((resolve, reject) => {
-    connection.query("SELECT users.id, users.name, users.phone_number, users.email, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE email = ?", email, (error, result) => {
+    connection.query("SELECT users.id, users.name, users.phone_number, users.email, users.pin, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE email = ?", email, (error, result) => {
       if (!error) {
         resolve(result);
       } else {

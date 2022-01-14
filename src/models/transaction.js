@@ -27,7 +27,7 @@ const getTransaction = ({ sort, order, limit, offset }) => {
 
 const delTransaction = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query("DELETE FROM transaction WHERE id = ?", id, (error, result) => {
+    connection.query("DELETE FROM transaction WHERE transaction_id = ?", id, (error, result) => {
       if (!error) {
         resolve(result);
       } else {

@@ -192,6 +192,56 @@ const getUserByID = async (req, res, next) => {
   }
 };
 
+const pinConfirm = async (req, res, next) => {
+  try {
+    const { pin } = req.body;
+    const id = req.params.id;
+    const checkUserPIN = await modelUsers.getUserByID(id);
+    console.log(checkUserPIN);
+    const userPIN = checkUserPIN[0].pin;
+    if (pin === userPIN) {
+      commonHelper.reponse(res, (pin === userPIN), 200, "PIN Confirmation Success");
+    } else {
+      const errorRes = new Error("You entered the wrong PIN!");
+      errorRes.status = 403;
+      next(errorRes);
+    }
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
+const updatePhoneUser = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    // const { name, phone_number, username, email, password, pin } = req.body;
+    const { phone_number } = req.body;
+    // const passwordHashed = await bcrypt.hash(password, 10);
+    // const dataUser = {
+    //   name: name,
+    //   phone_number: phone_number,
+    //   username: username,
+    //   email: email,
+    //   password: passwordHashed,
+    //   pin: pin
+    // };
+    const dataUser = {
+      phone_number: phone_number
+    };
+
+    const result = await modelUsers.updateUser(dataUser, id);
+    commonHelper.reponse(res, result, 200, "Profile has been successfully updated");
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
 module.exports = {
   postUser: postUser,
   delUser: delUser,
@@ -200,5 +250,7 @@ module.exports = {
   registerUser: registerUser,
   loginUser: loginUser,
   getUserByID: getUserByID,
-  updateUser: updateUser
+  updateUser: updateUser,
+  pinConfirm: pinConfirm,
+  updatePhoneUser: updatePhoneUser
 };

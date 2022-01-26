@@ -1,12 +1,13 @@
 const express = require("express");
 const userController = require("../controller/user");
+const { protect } = require("../middleware/authentication");
 const middleware = require("../middleware/midware");
 
 const route = express.Router();
 
 route
   .post("/", userController.postUser)
-  .get("/", userController.getUsersFiltered)
+  .get("/", protect, userController.getUsersFiltered)
   .delete("/:id", userController.delUser)
   .put("/pin/:id", userController.updatePinUser)
   .put("/phone/:id", userController.updatePhoneUser)

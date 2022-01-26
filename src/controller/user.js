@@ -174,6 +174,7 @@ const loginUser = async (req, res, next) => {
       name: user.name,
       role: "admin"
     };
+    console.log(payload);
     const tokenExpiration = {
       expiresIn: 60 * 60
     };

@@ -168,7 +168,7 @@ const loginUser = async (req, res, next) => {
       const errorRes = new Error("You entered the wrong email / password!");
       errorRes.status = 403;
       next(errorRes);
-    } const secretKey = process.env.SECRET_KEY;
+    } const secretKey = "jiakhnapadahnih";
     const payload = {
       email: user.email,
       name: user.name,

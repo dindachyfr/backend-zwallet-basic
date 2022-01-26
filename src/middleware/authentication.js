@@ -11,7 +11,7 @@ const protect = (req, res, next) => {
     next(errorRes);
   }
   try {
-    const secretKey = process.env.SECRET_KEY_JWT;
+    const secretKey = "jiakhnapadahnih";
     const decoded = jwt.verify(token, secretKey);
     req.email = decoded.email;
     req.role = decoded.role;

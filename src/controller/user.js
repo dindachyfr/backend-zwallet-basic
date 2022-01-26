@@ -3,7 +3,7 @@ const modelUsers = require("../models/user");
 const modelWallet = require("../models/wallet");
 const commonHelper = require("../helper/common");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
 const getUsersFiltered = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -164,13 +164,22 @@ const loginUser = async (req, res, next) => {
     console.log(password);
     console.log(user.password);
     console.log(passwordMatches);
-    if (passwordMatches) {
-      commonHelper.reponse(res, userDisplay, 200, "Login Success");
-    } else {
+    if (!passwordMatches) {
       const errorRes = new Error("You entered the wrong email / password!");
       errorRes.status = 403;
       next(errorRes);
-    }
+    } const secretKey = process.env.SECRET_KEY;
+    const payload = {
+      email: user.email,
+      name: user.name,
+      role: "admin"
+    };
+    const tokenExpiration = {
+      expiresIn: 60 * 60
+    };
+    const token = jwt.sign(payload, secretKey, tokenExpiration);
+    user.token = token;
+    commonHelper.reponse(res, userDisplay, 200, "Login Success");
   } catch (error) {
     const errorRes = new Error("Internal Server Error");
     errorRes.status = 500;

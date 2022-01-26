@@ -179,7 +179,7 @@ const loginUser = async (req, res, next) => {
       expiresIn: 60 * 60
     };
     const token = jwt.sign(payload, secretKey, tokenExpiration);
-    user.token = token;
+    userDisplay.token = token;
     commonHelper.reponse(res, userDisplay, 200, "Login Success");
   } catch (error) {
     const errorRes = new Error("Internal Server Error");

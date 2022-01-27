@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const protect = (req, res, next) => {
   let token;
@@ -11,7 +12,7 @@ const protect = (req, res, next) => {
     next(errorRes);
   }
   try {
-    const secretKey = "jiakhnapadahnih";
+    const secretKey = process.env.SECRET_KEY;
     const decoded = jwt.verify(token, secretKey);
     req.email = decoded.email;
     req.role = decoded.role;

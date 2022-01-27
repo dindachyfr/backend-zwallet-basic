@@ -4,6 +4,8 @@ const modelWallet = require("../models/wallet");
 const commonHelper = require("../helper/common");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 const getUsersFiltered = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -167,8 +169,8 @@ const loginUser = async (req, res, next) => {
     if (!passwordMatches) {
       const errorRes = new Error("You entered the wrong email / password!");
       errorRes.status = 403;
-      next(errorRes);
-    } const secretKey = "jiakhnapadahnih";
+      return next(errorRes);
+    } const secretKey = process.env.SECRET_KEY;
     const payload = {
       email: user.email,
       name: user.name,

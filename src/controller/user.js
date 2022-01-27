@@ -8,6 +8,7 @@ require("dotenv").config();
 
 const getUsersFiltered = async (req, res, next) => {
   try {
+    console.log("yiha");
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 2;
     const offset = (page - 1) * limit;
@@ -154,6 +155,19 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+const getProfile = async (req, res, next) => {
+  try {
+    const email = req.email;
+    const result = await modelUsers.userDisplay(email);
+    commonHelper.reponse(res, result, 200, null);
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -176,7 +190,7 @@ const loginUser = async (req, res, next) => {
       name: user.name,
       role: "admin"
     };
-    console.log(payload);
+    // console.log(payload);
     const tokenExpiration = {
       expiresIn: 60 * 60
     };
@@ -264,5 +278,6 @@ module.exports = {
   getUserByID: getUserByID,
   updateUser: updateUser,
   pinConfirm: pinConfirm,
-  updatePhoneUser: updatePhoneUser
+  updatePhoneUser: updatePhoneUser,
+  getProfile: getProfile
 };

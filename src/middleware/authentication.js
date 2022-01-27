@@ -16,6 +16,7 @@ const protect = (req, res, next) => {
     const decoded = jwt.verify(token, secretKey);
     req.email = decoded.email;
     req.role = decoded.role;
+    console.log("ini dia", req.email);
     next();
   } catch (err) {
     // console.log('error dari verify', err);

@@ -2,9 +2,9 @@
 /* eslint-disable camelcase */
 const modelTransaction = require("../models/transaction");
 const commonHelper = require("../helper/common");
-// const redis = require("redis");
-// const client = redis.createClient(6379);
-// client.connect();
+const redis = require("redis");
+const client = redis.createClient(6379);
+client.connect();
 
 const postTransaction = async (req, res, next) => {
   try {
@@ -81,7 +81,7 @@ const getTransaction = async (req, res, next) => {
     const resultCount = await modelTransaction.countTransctions();
     const { total } = resultCount[0];
     console.log(total);
-    // await client.setEx("transactions", 60 * 60, JSON.stringify(result));
+    await client.setEx("transactions", 60 * 60, JSON.stringify(result));
 
     commonHelper.reponse(res, result, 200, null, {
       currentPage: page,

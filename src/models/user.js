@@ -27,7 +27,7 @@ const getUsersFiltered = ({ filter, limit, offset }) => {
 
 const getUserByID = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query("SELECT users.id, users.name, users.phone_number, users.email, users.pin, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE users.id = ?", id, (error, result) => {
+    connection.query("SELECT users.id, users.name, users.phone_number, users.email, users.pin, users.profile_picture, users.role, users.status, wallet.id AS wallet_id FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE users.id = ?", id, (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -69,6 +69,18 @@ const updateUser = (dataUser, id) => {
   });
 };
 
+const updateUserStatus = (dataUser, id) => {
+  return new Promise((resolve, reject) => {
+    connection.query("UPDATE users SET ? WHERE id = ?", [dataUser, id], (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
 const findByEmail = (email) => {
   return new Promise((resolve, reject) => {
     connection.query("SELECT * FROM users WHERE email = ?", email, (error, result) => {
@@ -83,7 +95,7 @@ const findByEmail = (email) => {
 
 const userDisplay = (email) => {
   return new Promise((resolve, reject) => {
-    connection.query("SELECT users.id, users.name, users.phone_number, users.email, users.pin, wallet.id AS wallet_id, wallet.balance FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE email = ?", email, (error, result) => {
+    connection.query("SELECT users.id, users.name, users.phone_number, users.email, users.role, users.status, wallet.id AS wallet_id, users.profile_picture FROM users JOIN wallet ON (wallet.user_id = users.id) WHERE email = ?", email, (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -114,5 +126,6 @@ module.exports = {
   findByEmail: findByEmail,
   createAccount: createAccount,
   userDisplay: userDisplay,
-  getUserByID: getUserByID
+  getUserByID: getUserByID,
+  updateUserStatus: updateUserStatus
 };

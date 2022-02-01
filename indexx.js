@@ -36,6 +36,10 @@ app.use("/user-wallet", walletRoute);
 // handle data transaction
 app.use("/transaction", transactionRoute);
 
+// handle link to profile_picture
+// kalo ga pake ginian nanti link profile_picture will be redirected to handleNotFound
+app.use("/file", express.static("./uploads"));
+
 // handle typo in writing path
 app.use(helper.handleNotFound);
 

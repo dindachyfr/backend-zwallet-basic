@@ -1,21 +1,25 @@
 const express = require("express");
-const { getProfile } = require("../controller/user");
 const userController = require("../controller/user");
-const { protect } = require("../middleware/authentication");
+const { protect, tokenSignUp } = require("../middleware/authentication");
 const middleware = require("../middleware/midware");
+const upload = require("../middleware/uploadFile");
+// eslint-disable-next-line no-unused-vars
+const redisMidware = require("../middleware/redis");
 
 const route = express.Router();
 
 route
-  .get("/", protect, userController.getUsersFiltered)
-  .delete("/:id", userController.delUser)
-  .put("/pin/:id", userController.updatePinUser)
-  .put("/phone/:id", userController.updatePhoneUser)
+  .get("/", userController.getUsersFiltered)
+  .delete("/:id", protect, userController.delUser) // admin only
+  .put("/pin/:id", userController.updatePinUser) // del redis redisMidware.delProfileRedis,
+  .put("/phone/:id", userController.updatePhoneUser) // del redis redisMidware.delProfileRedis
   .put("/:id", userController.updateUser)
+  .put("/profile-picture/:id", upload.single("profile_picture"), userController.updatePPUser) // del redis redisMidware.delProfileRedis
   .post("/register", middleware.midUser, userController.registerUser)
-  .post("/login", userController.loginUser)
-  .get("/:id", protect, userController.getUserByID)
+  .post("/login", userController.loginUser) // del redis redisMidware.delProfileRedis
+  .get("/:id", userController.getUserByID) // ganti endpoint because meresahkan warga, get user by id kgk jalan
   .post("/pinconfirm/:id", userController.pinConfirm)
-  .get("/profile", protect, getProfile);
+  .get("/user/profile", protect, userController.getProfile) // profile redis redisMidware.hitCacheProfile
+  .get("/account-verification/:token", tokenSignUp, userController.updateUserStatus);
 
 module.exports = route;

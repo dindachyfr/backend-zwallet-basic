@@ -36,4 +36,31 @@ const protect = (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+const tokenSignUp = (req, res, next) => {
+  try {
+    const token = req.params.token;
+    const secretKey = process.env.SECRET_KEY;
+    const decoded = jwt.verify(token, secretKey);
+    req.email = decoded.email;
+    req.id = decoded.id;
+    console.log("ini dia", req.id);
+    next();
+  } catch (err) {
+    // console.log('error dari verify', err);
+    if (err && err.name === "JsonWebTokenError") {
+      const errorRes = new Error("needs valid token!");
+      errorRes.status = 403;
+      next(errorRes);
+    } else if (err && err.name === "TokenExpiredError") {
+      const errorRes = new Error("token has been expired!");
+      errorRes.status = 403;
+      next(errorRes);
+    } else {
+      const errorRes = new Error("token hasnt been activated!");
+      errorRes.status = 403;
+      next(errorRes);
+    }
+  }
+};
+
+module.exports = { protect, tokenSignUp };

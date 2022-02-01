@@ -52,7 +52,6 @@ const getDetailedWallet = async (req, res, next) => {
   try {
     const id = req.params.id;
     const result = await modelWallet.getDetailedWallet(id);
-
     commonHelper.reponse(res, result, 200);
   } catch (error) {
     const errorRes = new Error("Internal Server Error");

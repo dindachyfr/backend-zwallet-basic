@@ -2,6 +2,9 @@
 /* eslint-disable camelcase */
 const modelTransaction = require("../models/transaction");
 const commonHelper = require("../helper/common");
+// const redis = require("redis");
+// const client = redis.createClient(6379);
+// client.connect();
 
 const postTransaction = async (req, res, next) => {
   try {
@@ -24,9 +27,17 @@ const postTransaction = async (req, res, next) => {
 
 const delTransaction = async (req, res, next) => {
   try {
-    const id = req.params.id;
-    result = await modelTransaction.delTransaction(id);
-    commonHelper.reponse(res, result, 200);
+    const id = req.params.transaction_id;
+    const role = req.role;
+    if (role === "admin") {
+      result = await modelTransaction.delTransaction(id);
+      commonHelper.reponse(res, result, 200);
+    } else {
+      const errorRes = new Error("You are not authorized to take this action");
+      errorRes.status = 403;
+      console.log(error);
+      next(errorRes);
+    }
   } catch (error) {
     const errorRes = new Error("Internal Server Error");
     errorRes.status = 500;
@@ -70,6 +81,7 @@ const getTransaction = async (req, res, next) => {
     const resultCount = await modelTransaction.countTransctions();
     const { total } = resultCount[0];
     console.log(total);
+    // await client.setEx("transactions", 60 * 60, JSON.stringify(result));
 
     commonHelper.reponse(res, result, 200, null, {
       currentPage: page,

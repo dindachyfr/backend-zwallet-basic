@@ -48,9 +48,10 @@ const getTransactionHistory = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 2;
     const offset = (page - 1) * limit;
+    const order = req.query.order || "DESC";
     const sort = req.query.sort || "date";
     const id = req.params.sender_wallet_id;
-    const result = await modelTransaction.getTransactionHistory({ id, sort, limit, offset });
+    const result = await modelTransaction.getTransactionHistory({ id, sort, limit, offset, order });
     const resultCount = await modelTransaction.countTransctionsBySenderID(id);
     const { total } = resultCount[0];
     commonHelper.reponse(res, result, 200, null, {

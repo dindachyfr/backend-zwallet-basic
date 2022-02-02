@@ -212,7 +212,7 @@ const updateUserStatus = async (req, res, next) => {
     };
     const result = await modelUsers.updateUserStatus(dataUser, id);
     commonHelper.reponse(res, [dataUser, result], 200, "Your account has been successfully activated");
-    // res.redirect("http://localhost:3000/login"); // buat di frontend nanti
+    res.redirect("http://localhost:3000/login"); // buat di frontend nanti
   } catch (error) {
     const errorRes = new Error("Internal Server Error");
     errorRes.status = 500;

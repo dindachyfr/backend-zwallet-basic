@@ -121,7 +121,7 @@ const expense = async (req, res, next) => {
 
 const income = async (req, res, next) => {
   try {
-    const id = req.params.sender_wallet_id;
+    const id = req.params.receiver_wallet_id;
     const result = await modelTransaction.getIncome(id);
     commonHelper.reponse(res, result, 200, null);
   } catch (error) {

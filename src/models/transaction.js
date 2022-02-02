@@ -87,7 +87,7 @@ const getTransactionRecord = (id_transaction) => {
 
 const getExpense = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query("SELECT sender_wallet_id, SUM(amount) FROM transaction WHERE sender_wallet_id = ?", id, (error, result) => {
+    connection.query("SELECT sender_wallet_id, SUM(amount) as amount FROM transaction WHERE sender_wallet_id = ?", id, (error, result) => {
       if (!error) {
         resolve(result);
       } else {
@@ -99,7 +99,7 @@ const getExpense = (id) => {
 
 const getIncome = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query("SELECT receiver_wallet_id, SUM(amount) FROM transaction WHERE receiver_wallet_id = ?", id, (error, result) => {
+    connection.query("SELECT receiver_wallet_id, SUM(amount) as amount FROM transaction WHERE receiver_wallet_id = ?", id, (error, result) => {
       if (!error) {
         resolve(result);
       } else {

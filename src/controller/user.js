@@ -4,9 +4,6 @@ const modelWallet = require("../models/wallet");
 const commonHelper = require("../helper/common");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const redis = require("redis");
-const client = redis.createClient(6379);
-client.connect();
 require("dotenv").config();
 
 const getUsersFiltered = async (req, res, next) => {
@@ -199,7 +196,6 @@ const getProfile = async (req, res, next) => {
     const email = req.email;
     const result = await modelUsers.userDisplay(email);
     commonHelper.reponse(res, result, 200, null);
-    await client.setEx("profile", 60 * 60, JSON.stringify(result));
   } catch (error) {
     const errorRes = new Error("Internal Server Error");
     errorRes.status = 500;

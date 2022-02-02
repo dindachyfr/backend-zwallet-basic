@@ -56,7 +56,7 @@ const confirmTransfer = async (req, res, next) => { // .put('/transfer/confirm/u
 
 const cancelTransfer = async (req, res, next) => { // .delete('/transfer/cancel/:id)
   try {
-    const record_no = req.params.id;
+    const record_no = req.params.transaction_id;
     const result = await modelTransaction.delTransaction(record_no);// buat delete from transaction where id = record_no
     commonHelper.reponse(res, result, 200, "Transaction canceled");
   } catch (error) {

@@ -13,6 +13,8 @@ route
   .put("/transfer/confirm/:sender_wallet_id/:transaction_id", transferController.confirmTransfer) // del redis delTransactionsRedis
   .delete("/transfer/cancel/:transaction_id", transferController.cancelTransfer)
   .post("/transfer", middleware.midTransfer, transferController.transfer) // del redis delTransactionsRedis
-  .put("/transfer/confirm/:id/:sender_wallet_id/:transaction_id", transferController.confirmTransfer); // del redis delTransactionsRedis
+  .put("/transfer/confirm/:id/:sender_wallet_id/:transaction_id", transferController.confirmTransfer) // del redis delTransactionsRedis
+  .get("transfer/expense/:sender_wallet_id", transactionController.expense)
+  .get("transfer/expense/:sender_wallet_id", transactionController.income);
 
 module.exports = route;

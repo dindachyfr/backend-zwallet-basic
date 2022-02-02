@@ -106,10 +106,38 @@ const getTransactionRecord = async (req, res, next) => {
   }
 };
 
+const expense = async (req, res, next) => {
+  try {
+    const id = req.params.sender_wallet_id;
+    const result = await modelTransaction.getExpense(id);
+    commonHelper.reponse(res, result, 200, null);
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
+const income = async (req, res, next) => {
+  try {
+    const id = req.params.sender_wallet_id;
+    const result = await modelTransaction.getIncome(id);
+    commonHelper.reponse(res, result, 200, null);
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
 module.exports = {
   postTransaction: postTransaction,
   delTransaction: delTransaction,
   getTransaction: getTransaction,
   getTransactionHistory: getTransactionHistory,
-  getTransactionRecord: getTransactionRecord
+  getTransactionRecord: getTransactionRecord,
+  expense: expense,
+  income: income
 };

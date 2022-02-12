@@ -227,7 +227,7 @@ const loginUser = async (req, res, next) => {
 
     const [user] = await modelUsers.findByEmail(email);
     const [userDisplay] = await modelUsers.userDisplay(email);
-    console.log(user);
+    console.log("loh");
 
     const passwordMatches = await bcrypt.compare(password, user.password);
     console.log(password);
@@ -250,7 +250,7 @@ const loginUser = async (req, res, next) => {
       };
       const token = jwt.sign(payload, secretKey, tokenExpiration);
       userDisplay.token = token;
-      commonHelper.reponse(res, [userDisplay, token], 200, "Login Success");
+      commonHelper.reponse(res, user, 200, "Login Success");
     } else if (passwordMatches && user.status !== "active") {
       const errorRes = new Error("Please activate your account first!");
       errorRes.status = 403;

@@ -250,7 +250,7 @@ const loginUser = async (req, res, next) => {
       };
       const token = jwt.sign(payload, secretKey, tokenExpiration);
       userDisplay.token = token;
-      commonHelper.reponse(res, user, 200, "Login Success");
+      commonHelper.reponse(res, userDisplay, 200, "Login Success");
     } else if (passwordMatches && user.status !== "active") {
       const errorRes = new Error("Please activate your account first!");
       errorRes.status = 403;

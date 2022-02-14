@@ -18,6 +18,7 @@ const basePutUnit = (route) => {
 };
 
 let userID;
+let walletID;
 
 describe("GET method in route users", () => {
   const limit = 25;
@@ -47,6 +48,7 @@ describe("GET method in route users", () => {
       .end((err, res) => {
         expect(res.body.data[0]).to.have.property("id", userID).to.be.a("number");
         console.log(res.body.data[0]);
+        walletID = res.body.data[0].wallet_id;
         done();
       });
   });
@@ -94,8 +96,8 @@ describe("Handle authentication feature", () => {
         password: "aninglucu"
       })
       .end((err, res) => {
-        expect(res.body.data[0]).to.have.property("token").to.be.a("string");
-        token = res.body.data[0].token;
+        expect(res.body.data).to.have.property("token").to.be.a("string");
+        token = res.body.data.token;
         // console.log(token);
         done();
       });
@@ -123,7 +125,7 @@ describe("Handle authentication feature", () => {
     basePostUnit("users/register")
       .send({
         name: "jaka",
-        email: "jakawidada@gmail.com",
+        email: "jakawidadas@gmail.com",
         password: "123456"
       })
       .end((err, res) => {
@@ -157,31 +159,32 @@ describe("Handle authentication feature", () => {
   });
 });
 
-// describe("Handle transfer feature", () => {
-//   let insertId;
-//   it("Expect status code 200 when posting new transaction", (done) => {
-//     basePostUnit("transaction/transfer")
-//       .send({
-//         sender_wallet_id: 23,
-//         receiver_wallet_id: 6,
-//         amount: 500,
-//         notes: "bayar apaan y"
-//       })
-//       .end((err, res) => {
-//      expect(res).to.have.property("statusCode", 403);
-//         expect(res.body.data).to.have.property("insertId");
-//         insertId = res.body.data.insertId;
-//         console.log(insertId);
-//         done();
-//       });
-//   });
-//   it("Expect status code 200 and message when confirming new transaction", (done) => {
-//     basePutUnit("transaction/transfer/confirm/32/23/" + insertId)
-//       .send({ pin: "123456" })
-//       .end((err, res) => {
-//         expect(res).to.have.status(200);
-//         expect(res.body).to.have.property("message", "Transaction succeeded");
-//         done();
-//       });
-//   });
-// });
+describe("Handle transfer feature", () => {
+  let insertId;
+  it("Expect status code 200 when posting new transaction", (done) => {
+    console.log("wallet id adalah" + walletID);
+    basePostUnit("transaction/transfer")
+      .send({
+        sender_wallet_id: walletID,
+        receiver_wallet_id: 6,
+        amount: 500,
+        notes: "bayar apaan y"
+      })
+      .end((err, res) => {
+        expect(res).to.have.property("statusCode", 200);
+        expect(res.body.data).to.have.property("insertId");
+        insertId = res.body.data.insertId;
+        console.log(insertId);
+        done();
+      });
+  });
+  it("Expect status code 200 and message when confirming new transaction", (done) => {
+    basePutUnit(`transaction/transfer/confirm/${userID}/${walletID}/${insertId}`)
+      .send({ pin: "123456" })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property("message", "Transaction succeeded");
+        done();
+      });
+  });
+});

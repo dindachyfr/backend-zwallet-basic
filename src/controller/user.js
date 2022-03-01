@@ -9,20 +9,23 @@ require("dotenv").config();
 const getUsersFiltered = async (req, res, next) => {
   try {
     console.log("yiha");
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 2;
-    const offset = (page - 1) * limit;
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || ;
+    // const offset = (page - 1) * limit;
     const filter = req.query.filter || "";
-    const result = await modelUsers.getUsersFiltered({ filter, limit, offset });
+    // const result = await modelUsers.getUsersFiltered({ filtert , limit, offse});
+    const result = await modelUsers.getUsersFiltered({ filter });
     const resultCount = await modelUsers.countUsers();
     const { total } = resultCount[0];
     console.log(total);
-    commonHelper.reponse(res, result, 200, null, {
-      currentPage: page,
-      limit: limit,
-      totalData: total,
-      totalPage: Math.ceil(total / limit)
-    });
+    commonHelper.reponse(res, result, 200, null);
+    //   {
+    //   currentPage: page,
+    //   limit: limit,
+    //   totalData: total,
+    //   totalPage: Math.ceil(total / limit)
+    // }
+    // );
   } catch (error) {
     const errorRes = new Error("Internal Server Error");
     errorRes.status = 500;
@@ -173,7 +176,7 @@ const registerUser = async (req, res, next) => {
         id: accountCreated.insertId
       };
       const tokenExpiration = {
-        expiresIn: 60 * 60
+        expiresIn: 60 * 60 * 60
       };
       const token = jwt.sign(payload, secretKey, tokenExpiration);
 
@@ -246,7 +249,7 @@ const loginUser = async (req, res, next) => {
       };
       // console.log(payload);
       const tokenExpiration = {
-        expiresIn: 60 * 60
+        expiresIn: 60 * 60 * 60
       };
       const token = jwt.sign(payload, secretKey, tokenExpiration);
       userDisplay.token = token;

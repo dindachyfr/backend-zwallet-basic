@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 const modelTransaction = require("../models/transaction");
 const modelWallet = require("../models/wallet");
@@ -40,7 +41,7 @@ const confirmTransfer = async (req, res, next) => { // .put('/transfer/confirm/u
 
       const updateWalletSender = await modelWallet.updateWallet(dataWalletSender, id);
       const updateWalletReceiver = await modelWallet.updateWallet(dataWalletReceiver, receiver_wallet_id);
-      commonHelper.reponse(res, [updateWalletSender, updateWalletReceiver], 201, "Transaction succeeded");
+      commonHelper.reponse(res, getTransactionRecord, 201, "Transaction succeeded");
     } else {
       const errorRes = new Error("You entered the wrong PIN!");
       errorRes.status = 403;

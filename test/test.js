@@ -35,7 +35,7 @@ describe("GET method in route users", () => {
     baseGetUnit("users")
       .query({ limit })
       .end((err, res) => {
-        console.log(res.request.req.path); // get url buat parameter
+        // console.log(res.request.req.path); // get url buat parameter
         expect(res.request.req.path).to.include("limit");
         expect(res.body.data).to.be.a("array").to.have.lengthOf.at.most(limit);
         done();
@@ -47,7 +47,7 @@ describe("GET method in route users", () => {
     baseGetUnit("users/" + userID)
       .end((err, res) => {
         expect(res.body.data[0]).to.have.property("id", userID).to.be.a("number");
-        console.log(res.body.data[0]);
+        // console.log(res.body.data[0]);
         walletID = res.body.data[0].wallet_id;
         done();
       });
@@ -85,7 +85,7 @@ describe("Handle authentication feature", () => {
       })
       .end((err, res) => {
         expect(res).to.have.property("statusCode", 200);
-        console.log(res.request._data); // get http request body
+        // console.log(res.request._data); // get http request body
         done();
       });
   });
@@ -125,7 +125,7 @@ describe("Handle authentication feature", () => {
     basePostUnit("users/register")
       .send({
         name: "jaka",
-        email: "jakawidadas@gmail.com",
+        email: "jakawidadass@gmail.com",
         password: "123456"
       })
       .end((err, res) => {
@@ -174,7 +174,7 @@ describe("Handle transfer feature", () => {
         expect(res).to.have.property("statusCode", 200);
         expect(res.body.data).to.have.property("insertId");
         insertId = res.body.data.insertId;
-        console.log(insertId);
+        // console.log(insertId);
         done();
       });
   });

@@ -11,12 +11,48 @@ const app = express();
 const userRoute = require("./src/route/user");
 const walletRoute = require("./src/route/wallet");
 const transactionRoute = require("./src/route/transaction");
+const notifRoute = require("./src/route/notification");
 const helper = require("./src/helper/common");
 const morgan = require("morgan");
 const cors = require("cors");
 
+// config socket
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server({
+  cors: { origin: "http://localhost:3000" }
+});
+
+io.on("connection", (socket) => {
+  console.log("some user ONLINE");
+  // join room
+  socket.on("wallet ID", (UID) => {
+    socket.join(UID);
+    console.log(UID);
+  });
+  // notif global
+  socket.on("notif admin", (notification) => {
+    io.emit("notif admin", notification);
+    console.log(notification);
+  });
+  // notif transfer
+  socket.on("notif transaksi", (receipt) => {
+    socket.to(receipt.receiver).emit("notif transaksi", receipt);
+    console.log(receipt);
+  });
+  socket.on("disconnect", () => {
+    console.log("some user OFFLINE");
+  });
+});
+
+io.listen(server);
+
+// end of config socket
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+
+server.listen(PORT, () => {
   console.log(`Server running in port ${PORT}`);
 });
 
@@ -35,6 +71,9 @@ app.use("/user-wallet", walletRoute);
 
 // handle data transaction
 app.use("/transaction", transactionRoute);
+
+// handle data transaction
+app.use("/notification", notifRoute);
 
 // handle link to profile_picture
 // kalo ga pake ginian nanti link profile_picture will be redirected to handleNotFound

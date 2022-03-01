@@ -78,8 +78,6 @@ const getTransaction = async (req, res, next) => {
     const result = await modelTransaction.getTransaction({ sort, order, limit, offset });
     const resultCount = await modelTransaction.countTransctions();
     const { total } = resultCount[0];
-    console.log(total);
-
     commonHelper.reponse(res, result, 200, null, {
       currentPage: page,
       limit: limit,
@@ -133,6 +131,31 @@ const income = async (req, res, next) => {
   }
 };
 
+const getNotification = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 4;
+    const offset = (page - 1) * limit;
+    const order = req.query.order || "DESC";
+    const sort = req.query.sort || "date";
+    const id = req.params.wallet_id;
+    const result = await modelTransaction.getNotification({ id, sort, limit, offset, order });
+    const resultCount = await modelTransaction.countNotificationByID(id);
+    const { total } = resultCount[0];
+    commonHelper.reponse(res, result, 200, null, {
+      currentPage: page,
+      limit: limit,
+      totalData: total,
+      totalPage: Math.ceil(total / limit)
+    });
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
 module.exports = {
   postTransaction: postTransaction,
   delTransaction: delTransaction,
@@ -140,5 +163,6 @@ module.exports = {
   getTransactionHistory: getTransactionHistory,
   getTransactionRecord: getTransactionRecord,
   expense: expense,
-  income: income
+  income: income,
+  getNotification: getNotification
 };

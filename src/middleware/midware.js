@@ -47,4 +47,13 @@ midUser = (req, res, next) => {
   } else { next(); }
 };
 
-module.exports = { midTransfer, midWallet, midUser };
+midNotification = (req, res, next) => {
+  const { title } = req.body;
+  if (!title) {
+    const errorRes = new Error("Please fill in title form!");
+    errorRes.status = 500;
+    next(errorRes);
+  } else { next(); }
+};
+
+module.exports = { midTransfer, midWallet, midUser, midNotification };

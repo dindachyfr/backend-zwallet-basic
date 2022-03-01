@@ -15,6 +15,7 @@ route
   .post("/transfer", middleware.midTransfer, transferController.transfer) // del redis delTransactionsRedis
   .put("/transfer/confirm/:id/:sender_wallet_id/:transaction_id", transferController.confirmTransfer) // del redis delTransactionsRedis
   .get("/transfer/expense/user/:sender_wallet_id", transactionController.expense)
-  .get("/transfer/income/user/:receiver_wallet_id", transactionController.income);
+  .get("/transfer/income/user/:receiver_wallet_id", transactionController.income)
+  .get("/notification/:wallet_id", transactionController.getNotification);
 
 module.exports = route;

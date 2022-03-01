@@ -7,7 +7,7 @@ const upload = require("../middleware/uploadFile");
 const route = express.Router();
 
 route
-  .get("/", userController.getUsersFiltered)
+  .get("/", protect, userController.getUsersFiltered)
   .delete("/:id", protect, userController.delUser) // admin only
   .put("/pin/:id", userController.updatePinUser) // del redis redisMidware.delProfileRedis,
   .put("/phone/:id", userController.updatePhoneUser) // del redis redisMidware.delProfileRedis

@@ -42,7 +42,7 @@ midUser = (req, res, next) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     const errorRes = new Error("Please fill in all forms!");
-    errorRes.status = 500;
+    errorRes.status = 403;
     next(errorRes);
   } else { next(); }
 };

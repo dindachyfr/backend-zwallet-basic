@@ -24,14 +24,14 @@ const sendEmail = async (token, email) => {
     port: 465,
     secure: true,
     auth: {
-      user: "24kgoaldie@gmail.com",
-      pass: "12september1997"
+      user: process.env.EMAIL,
+      pass: process.env.PASS
     }
   });
 
   const info = await transporter.sendMail({
     from: "24kgoaldie@gmail.com", // sender address
-    to: "jungjaewon290394@gmail.com", // list of receivers
+    to: email, // list of receivers
     subject: "ZWallet Account Verification", // Subject line
     html: `
     <!DOCTYPE html>
@@ -111,7 +111,7 @@ const sendEmail = async (token, email) => {
                     <p class="p1">There's one quick step you need to complete in order to confirm your email address.</p>
                     <p class="p1">Please kindly click link below to start accessing banking needs with all devices and all platforms with 30.000+ users</p>
                     <div class="wrapper-confirm">
-                        <a href="https://zwallet-dinda.herokuapp.com/users/account-verification/${token}" target="_blank" class="confirm">
+                        <a href="http://localhost:5000/users/account-verification/${token}" target="_blank" class="confirm">
                             Confirm</a>
                         </div>
                 </div>

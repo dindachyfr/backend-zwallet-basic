@@ -21,7 +21,7 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server({
-  cors: { origin: "https://zwallet-dindin.netlify.app" }
+  cors: { origin: ["https://zwallet-dinda.herokuapp.com", "http://localhost:3000"] }
 });
 
 io.on("connection", (socket) => {

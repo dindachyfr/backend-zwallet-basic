@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const connection = require("../config/db");
 
 const postWallet = (dataWallet) => {
@@ -48,9 +49,22 @@ const getDetailedWallet = (id) => {
   });
 };
 
+const topUpByID = ({ id, amount }) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`UPDATE wallet set balance = balance + ${amount} WHERE id = ?`, id, (error, result) => {
+      if (!error) {
+        resolve(result);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
+
 module.exports = {
   postWallet,
   getWallet,
   updateWallet,
-  getDetailedWallet
+  getDetailedWallet,
+  topUpByID
 };

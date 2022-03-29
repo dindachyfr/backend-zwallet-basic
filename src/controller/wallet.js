@@ -61,9 +61,24 @@ const getDetailedWallet = async (req, res, next) => {
   }
 };
 
+const topUpByID = async (req, res, next) => { // currently update by wallet_id
+  try {
+    const id = req.params.id;
+    const { amount } = req.body;
+    const result = await modelWallet.topUpByID({ amount, id });
+    res.json({ result: result });
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
 module.exports = {
   postWallet: postWallet,
   getWallet: getWallet,
   updateWallet: updateWallet,
-  getDetailedWallet: getDetailedWallet
+  getDetailedWallet: getDetailedWallet,
+  topUpByID
 };

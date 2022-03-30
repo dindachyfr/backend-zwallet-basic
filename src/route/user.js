@@ -11,7 +11,7 @@ route
   .delete("/:id", protect, userController.delUser) // admin only
   .put("/pin/:id", userController.updatePinUser) // del redis redisMidware.delProfileRedis,
   .put("/phone/:id", userController.updatePhoneUser) // del redis redisMidware.delProfileRedis
-  .put("/:id", userController.updateUser)
+  .put("/password/:id", userController.updateUser)
   .put("/profile-picture/:id", upload.single("profile_picture"), userController.updatePPUser) // del redis redisMidware.delProfileRedis
   .post("/register", middleware.midUser, userController.registerUser)
   .post("/login", userController.loginUser) // del redis redisMidware.delProfileRedis

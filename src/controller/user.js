@@ -107,23 +107,25 @@ const updatePinUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const { name, phone_number, username, email, password, pin } = req.body;
-    // const { pin } = req.body;
-    const passwordHashed = await bcrypt.hash(password, 10);
-    const dataUser = {
-      name: name,
-      phone_number: phone_number,
-      username: username,
-      email: email,
-      password: passwordHashed,
-      pin: pin
-    };
-    // const dataUser = {
-    //   pin: pin
-    // };
-
-    const result = await modelUsers.updateUser(dataUser, id);
-    commonHelper.reponse(res, result, 200, "Profile has been successfully updated");
+    const { currentPW, newPW1, newPW2 } = req.body;
+    const [user] = await modelUsers.getUserByID(id);
+    const [userData] = await modelUsers.findByEmail(user.email);
+    const passwordMatches = await bcrypt.compare(currentPW, userData.password);
+    if (passwordMatches && (newPW1 === newPW2)) {
+      const dataUser = {
+        password: newPW1
+      };
+      const result = await modelUsers.updateUser(dataUser, id);
+      commonHelper.reponse(res, result, 200, "Profile has been successfully updated");
+    } else if (!passwordMatches) {
+      const errorRes = new Error("Wrong Password!");
+      errorRes.status = 403;
+      return next(errorRes);
+    } else {
+      const errorRes = new Error("Error when confirming new password!");
+      errorRes.status = 403;
+      return next(errorRes);
+    }
   } catch (error) {
     const errorRes = new Error("Internal Server Error");
     errorRes.status = 500;

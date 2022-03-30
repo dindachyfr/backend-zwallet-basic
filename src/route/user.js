@@ -12,6 +12,7 @@ route
   .put("/pin/:id", userController.updatePinUser) // del redis redisMidware.delProfileRedis,
   .put("/phone/:id", userController.updatePhoneUser) // del redis redisMidware.delProfileRedis
   .put("/password/:id", userController.updateUser)
+  .put("/:id", userController.updatePW)
   .put("/profile-picture/:id", upload.single("profile_picture"), userController.updatePPUser) // del redis redisMidware.delProfileRedis
   .post("/register", middleware.midUser, userController.registerUser)
   .post("/login", userController.loginUser) // del redis redisMidware.delProfileRedis

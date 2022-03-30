@@ -112,8 +112,9 @@ const updateUser = async (req, res, next) => {
     const [userData] = await modelUsers.findByEmail(user.email);
     const passwordMatches = await bcrypt.compare(currentPW, userData.password);
     if (passwordMatches && (newPW1 === newPW2)) {
+      const passwordHashed = await bcrypt.hash(newPW1, 10);
       const dataUser = {
-        password: newPW1
+        password: passwordHashed
       };
       const result = await modelUsers.updateUser(dataUser, id);
       commonHelper.reponse(res, result, 200, "Profile has been successfully updated");
@@ -126,6 +127,30 @@ const updateUser = async (req, res, next) => {
       errorRes.status = 403;
       return next(errorRes);
     }
+  } catch (error) {
+    const errorRes = new Error("Internal Server Error");
+    errorRes.status = 500;
+    console.log(error);
+    next(errorRes);
+  }
+};
+
+const updatePW = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    // const { name, phone_number, username, email, password, pin } = req.body;
+    const { password } = req.body;
+    const passwordHashed = await bcrypt.hash(password, 10);
+    const dataUser = {
+      // name: name,
+      // phone_number: phone_number,
+      // username: username,
+      // email: email,
+      password: passwordHashed
+      // pin: pin
+    };
+    const result = await modelUsers.updateUser(dataUser, id);
+    commonHelper.reponse(res, result, 200, "Profile has been successfully updated");
   } catch (error) {
     const errorRes = new Error("Internal Server Error");
     errorRes.status = 500;
@@ -345,5 +370,6 @@ module.exports = {
   updatePhoneUser: updatePhoneUser,
   getProfile: getProfile,
   updatePPUser: updatePPUser,
-  updateUserStatus: updateUserStatus
+  updateUserStatus: updateUserStatus,
+  updatePW
 };
